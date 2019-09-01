@@ -7,7 +7,7 @@ let should = require('chai').should();
 const stringify = require ('./stringify.js');
 
 
-describe("`strinify()`", function () {
+describe("`stringify()`", function () {
   it("given an object with properties should return a multi-line string", function(){
       let str = stringify({name: "Arthur", swallow: "European"});
       let numLines = str.split(/\n/);
