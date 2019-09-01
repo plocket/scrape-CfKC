@@ -42,9 +42,11 @@ const getLog = function (logsDir) {
    *    Each value is separated by one space.
    */
   async function result (...toJoin) {
-    let oneLine = toJoin.join(' ') + '\n';
+    console.log(...toJoin);
+
+    let oneEntry = toJoin.join(' ') + '\n';
     try {
-      fs.appendFileSync(logsPath, oneLine);
+      fs.appendFileSync(logsPath, oneEntry);
     } catch (err) {
       // If error at this point, something's wrong
       throw err;

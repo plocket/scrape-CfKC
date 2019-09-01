@@ -1,4 +1,5 @@
 // getLog.test.js
+
 const fs = require('fs');
 const assert = require('assert');
 const expect = require('chai').expect;
