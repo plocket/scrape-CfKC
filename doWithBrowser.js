@@ -36,6 +36,12 @@ async function doWithBrowser ({
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
+  page.on('console',
+    async function pageLog (console_obj) {
+      await console.log(console_obj.text());
+    }
+  );
+
   try {
     // Do everything you want in this function
     await onStart({ browser, page });
