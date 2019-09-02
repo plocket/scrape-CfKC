@@ -2,6 +2,11 @@
 // run with
 // node joco/joco.js
 
+// Yeah, the var names are all over the place
+// Still trying to figure out how this will be used
+// and by who.
+
+
 // const fs = require('fs');
 
 const doWithBrowser = require ('../doWithBrowser.js');
@@ -27,8 +32,8 @@ let selectors = {
   inputs: {
     // http://jococourts.org/crdispo.aspx?which=99TC08868
     // doesn't work in Chrome
-    "Case Number":          '#txtCaseNo',
-    "Case Number Search":   '#BtnsrchExact',
+    "case_number":          '#txtCaseNo',
+    "case_number_search":   '#BtnsrchExact',
   },
   charges: {
     "count_table": '#Form1 > table:nth-child(5)',
@@ -37,7 +42,7 @@ let selectors = {
 };  // end selectors;
 
 let headings = {
-  "Count": [
+  "count": [
     "Count",
     "Section",
     "Date",
@@ -55,19 +60,13 @@ let headings = {
 
 
 // Will use arguments from some input
-let onStart = async function ({ page }) {
-
-  page.on('console',
-    async function pageLog (consoleObj) {
-      await console.log(consoleObj.text());
-    }
-  );
+let joco_on_start = async function ({ page, searchValues }) {
 
   let url = 'http://jococourts.org/index.aspx';
   let goto = await page.goto(url);
   console.log('Status:', goto.status());
 
-  let results = await scrapeJocoWith({
+  let results = await scrape_joco_with({
     page: page,
     selectors: selectors,
   });
@@ -76,47 +75,62 @@ let onStart = async function ({ page }) {
 }
 
 
-let scrapeJocoWith = async function ({ page, selectors }) {
+let scrape_joco_with = async function ({ page, selectors }) {
 
-  let caseNumberSelector = selectors.inputs["Case Number"]
-  await page.waitForSelector(caseNumberSelector);
+  let case_number_selector = selectors.inputs["case_number"]
+  await page.waitForSelector(case_number_selector);
   await page.$eval(
-    caseNumberSelector,
+    case_number_selector,
     function (el, str) { el.value = str },
     test_case.case_number
   );
 
-  let searchButtonSelector = selectors.inputs["Case Number Search"];
-  await page.waitForSelector(searchButtonSelector);
-  await page.click(searchButtonSelector);
+  // TODO: Deal with no results found
+
+  let search_button_selector = selectors.inputs["case_number_search"];
+  await page.waitForSelector(search_button_selector);
+  await page.click(search_button_selector);
 
   await page.waitForSelector(selectors.charges["count_table"])
-  let countRowSelector = selectors.charges["count_row"];
-  let result = await getTableAsObjs({
+  let result = await get_table_rows_as_obectjs({
     page: page,
-    rowSelector: countRowSelector,
-    headings: headings.Count,
+    row_selector: selectors.charges["count_row"],
+    headings: headings.count,
+    number_of_table_heading_rows: 1,
   })
 
-  return { "Counts": result };
+  // There's one table heading row
+  result.unshift();
+
+  return { "counts": result };
 };
 
 
-/**
-* @returns {[object]}
-*/
-let getTableAsObjs = async function ({ rowSelector, page, headings }) {
+/** Returns array of objects with key/value pairs
+ *    where keys match the headings given and values
+ *    are strings.
+ *
+ * Note: Does not check for wrong number of headings or
+ *    handle selector issues. Does not remove any rows
+ *    or columns.
+ *
+ * @returns {[object]}
+ */
+let get_table_rows_as_obectjs = async function ({
+  page,
+  row_selector,
+  headings
+}) {
 
   // Get an array of every count row's values
-  let rows = await page.$$eval( rowSelector,
-    function (rowHandles) {
-      let result = Array.from( rowHandles,
-        function (rowHandle) {
-          return rowHandle.innerText.split('\t');
+  let rows = await page.$$eval( row_selector,
+    function (row_handles) {
+      let result = Array.from( row_handles,
+        function (row_handle) {
+          return row_handle.innerText.split('\t');
         }
       )
-      // Assumes there's a headings row
-      result.shift();  // Take out headings row
+      
       return result; 
     }
   );
@@ -136,13 +150,17 @@ let getTableAsObjs = async function ({ rowSelector, page, headings }) {
   }
 
   return result;
-};  // Ends async getTableAsObjs()
-
+};  // Ends async get_table_rows_as_obectjs()
 
 
 let dev = async function () {
-  await doWithBrowser({ onStart });
+  await doWithBrowser({ onStart: joco_on_start });
   process.exit();
 };
 
 dev();
+
+
+module.exports = joco_on_start;
+module.exports.scrape_joco_with = scrape_joco_with;
+module.exports.get_table_rows_as_obectjs = get_table_rows_as_obectjs;
