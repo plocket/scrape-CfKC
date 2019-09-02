@@ -28,8 +28,8 @@ const cleanUp = function () {
 }
 
 // -- `getLog()` tests --
-describe.skip("`getLog()`", function () {
-// describe("`getLog()`", function () {
+// describe.skip("`getLog()`", function () {
+describe("`getLog()`", function () {
 
   beforeEach(function() {
     // runs after each test in this block
@@ -80,8 +80,8 @@ describe.skip("`getLog()`", function () {
 
 
 // -- `makeFileIfNeeded()` tests --
-describe.skip("`makeFileIfNeeded()`", function () {
-// describe("`makeFileIfNeeded()`", function () {
+// describe.skip("`makeFileIfNeeded()`", function () {
+describe("`makeFileIfNeeded()`", function () {
 
   let filePathForMakerTest = 'testFile.txt';
 
@@ -124,8 +124,8 @@ describe.skip("`makeFileIfNeeded()`", function () {
 
  
 // -- `errIfNotString()` tests --
-describe.skip("`errIfNotString()`", function () {
-// describe("`errIfNotString()`", function () {
+// describe.skip("`errIfNotString()`", function () {
+describe("`errIfNotString()`", function () {
 
   afterEach(function() {
     // runs after each test in this block
@@ -179,8 +179,8 @@ describe.skip("`errIfNotString()`", function () {
 
 
 // -- `log()` tests --
-describe.skip("`log()`", function () {
-// describe("`log()`", function () {
+// describe.skip("`log()`", function () {
+describe("`log()`", function () {
 
   let log = null;
 
