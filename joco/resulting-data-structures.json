@@ -1,0 +1,65 @@
+{
+  "Personal Detals": {
+    "Case Number": null,
+    "Judge": null,
+    "Division": null,
+    "Status": null,
+    "Last Name": null,
+    "First Name": null,
+    "Middle Name": null,
+    "Suffix": null,
+    "Race/Sex/DOB": null,
+    "Probation Officer": null,
+    "Defense Attourney": null,
+    "Prosecutor": null
+  },
+
+  "Charges": {
+      "Jail Time": {
+        "Original": null,
+        "Suspended": null,
+        "Final": null
+      },
+      "Probation": {
+        "Original": null
+      },
+    },
+    "Counts": [
+      {
+        "Count": null,
+        "Section": null,
+        "Date": null,
+        "Title": null,
+        "ACS": null,
+        "Drug": null,
+        "PL": null,
+        "Finding": null,
+        "TP": null,
+        "LVL": null,
+        "PN": null,
+        "Sentence Date": null
+      }
+    ],
+  },
+
+  "Case History (ROA)": {
+    "Date": null,
+    "Rows": [
+      {
+        "Date": null,
+        "Details": null
+      }
+    ],
+  },
+
+  "Calendar": [
+    {
+      "Court Date": null,
+      "Court Time": null,
+      "Division": null,
+      "Proceeding Type": null
+    }
+  ],
+
+  "Other Cases": "Unknown"
+};
